@@ -60,6 +60,9 @@ export default {
 			const duration = 1000
 			const easing = [0.23, 0.44, 0, 1]
 
+			// animation vars
+			const letterOffsetStart = -100
+
 			const seq = [
 				{
 					// expand horizontal bar
@@ -68,13 +71,13 @@ export default {
 						width: [35.3, 8],
 						translateX: [0, -10]
 					},
-					o: { duration, easing }
+					o: { duration: duration / 2, easing }
 				},
 				{
 					// move bars from left of word to right
 					e: rectWrapper,
 					p: {
-						translateX: [0, -wrapWidth + 20]
+						translateX: [0, -wrapWidth - 45]
 					},
 					o: {
 						sequenceQueue: false,
@@ -83,6 +86,32 @@ export default {
 					}
 				}
 			]
+
+			// Apply animation to letters if logo-only
+			const letters = [...this.$el.querySelectorAll('.word-wrap > *')]
+			letters.map(letter => letter.classList.remove('visible'))
+
+			if (this.logoOnly) {
+				letters.map((letter, i) => {
+					seq.push({
+						e: letter,
+						p: {
+							translateX: [0, letterOffsetStart - (i * 5)]
+						},
+						o: {
+							begin: ([el]) => {
+								setTimeout(() => {
+									el.classList.add('visible')
+								}, 20 * i)
+							},
+							sequenceQueue: false,
+							duration,
+							easing,
+							delay: i === 0 ? 80 : 0
+						}
+					})
+				})
+			}
 
 			Velocity.RunSequence(seq)
 		}
@@ -96,7 +125,7 @@ export default {
 .animating-word {
     font-size: 56px;
 
-    .word-wrap {
+    .word-wrap > *:not(.visible) {
         opacity: 0;
     }
 }
