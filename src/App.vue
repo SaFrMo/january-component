@@ -1,6 +1,7 @@
 <template>
     <div id="app">
         <animating-logo/>
+        <animating-logo text="January"/>
     </div>
 </template>
 

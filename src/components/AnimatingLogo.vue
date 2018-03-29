@@ -2,11 +2,18 @@
     <component :is="wrapper" :class="classes">
 
         <!-- Logo SVG -->
-        <span v-if="!text || !text.length" v-html="logoSvg"/>
+        <span v-if="logoOnly" v-html="logoSvg" class="logo-svg"/>
 
-        <!-- TODO: vanilla text -->
-        <span v-else>
-            {{ text }}
+        <!-- Typed text -->
+        <span v-else class="typed-text">
+
+            <span class="text">{{ cmpText }}</span>
+
+            <svg xmlns="http://www.w3.org/2000/svg" class="cursor" width="45" height="80" viewBox="0 0 45 80">
+                <rect x="9.7" y="35" width="35.3" height="6"/>
+                <rect y="45" width="6" height="35"/>
+            </svg>
+
         </span>
     </component>
 </template>
@@ -42,6 +49,9 @@ export default {
 				{ 'logo-only': this.logoOnly },
 				{ 'text-only': !this.logoOnly }
 			]
+		},
+		cmpText () {
+			return this.text
 		}
 	},
 	mounted () {
@@ -127,8 +137,19 @@ export default {
 .animating-word {
     font-size: 56px;
 
-    .word-wrap > *:not(.visible) {
+    // Logo
+    .logo-svg path:not(.visible) {
         opacity: 0;
+    }
+
+    // Typed text
+    .typed-text {
+        position: relative;
+
+        .cursor {
+            position: absolute;
+            top: 12px;
+        }
     }
 }
 
