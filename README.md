@@ -2,6 +2,12 @@
 
 > Animating logo for January
 
+Usage:
+* `npm i velocity-animate`
+* Place `AnimatingLogo.vue` and `JanuaryLogo.svg` in the same directory (or change `import logoSvg from '...'` to the SVG location)
+* Leave the `text` prop blank to use the default logo animation. Fill in `text` to create a typing animation.
+
+
 ## Build Setup
 
 ``` bash
