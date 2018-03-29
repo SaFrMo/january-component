@@ -1,5 +1,7 @@
 <template>
-    <component :is="wrapper" :class="classes" @click="runAnimation">
+    <component :is="wrapper" :class="classes">
+
+        <!-- Logo SVG -->
         <span v-if="!text || !text.length" v-html="logoSvg"/>
 
         <!-- TODO: vanilla text -->
@@ -43,10 +45,12 @@ export default {
 		}
 	},
 	mounted () {
-		this.runAnimation()
+		if (this.logoOnly) {
+			this.runLogoAnimation()
+		}
 	},
 	methods: {
-		runAnimation () {
+		runLogoAnimation () {
 			// horizontal bar
 			const horizontal = this.$el.querySelector('svg .horizontal')
 			// bar wrapper
@@ -81,7 +85,7 @@ export default {
 					},
 					o: {
 						sequenceQueue: false,
-						duration,
+						duration: duration + 10,
 						easing
 					}
 				}
@@ -91,27 +95,25 @@ export default {
 			const letters = [...this.$el.querySelectorAll('.word-wrap > *')]
 			letters.map(letter => letter.classList.remove('visible'))
 
-			if (this.logoOnly) {
-				letters.map((letter, i) => {
-					seq.push({
-						e: letter,
-						p: {
-							translateX: [0, letterOffsetStart - (i * 5)]
+			letters.map((letter, i) => {
+				seq.push({
+					e: letter,
+					p: {
+						translateX: [0, letterOffsetStart - (i * 5)]
+					},
+					o: {
+						begin: ([el]) => {
+							setTimeout(() => {
+								el.classList.add('visible')
+							}, 20 * i)
 						},
-						o: {
-							begin: ([el]) => {
-								setTimeout(() => {
-									el.classList.add('visible')
-								}, 20 * i)
-							},
-							sequenceQueue: false,
-							duration,
-							easing,
-							delay: i === 0 ? 80 : 0
-						}
-					})
+						sequenceQueue: false,
+						duration,
+						easing,
+						delay: i === 0 ? 80 : 0
+					}
 				})
-			}
+			})
 
 			Velocity.RunSequence(seq)
 		}
