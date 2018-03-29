@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <animating-logo/>
-        <animating-logo text="January"/>
+        <animating-logo text="Hello. How can we help you?"/>
     </div>
 </template>
 
@@ -22,7 +22,7 @@ export default {
     font-family: 'Maria', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
+    // text-align: center;
     margin-top: 60px;
 }
 </style>

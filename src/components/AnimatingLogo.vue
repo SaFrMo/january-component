@@ -9,7 +9,7 @@
 
             <span class="text">{{ cmpText }}</span>
 
-            <svg xmlns="http://www.w3.org/2000/svg" class="cursor" width="45" height="80" viewBox="0 0 45 80">
+            <svg v-if="typedLength" xmlns="http://www.w3.org/2000/svg" class="cursor" width="45" height="80" viewBox="0 0 45 80">
                 <rect x="9.7" y="35" width="35.3" height="6"/>
                 <rect y="45" width="6" height="35"/>
             </svg>
@@ -26,7 +26,8 @@ require('velocity-animate/velocity.ui')
 export default {
 	data () {
 		return {
-			logoSvg
+			logoSvg,
+			typedLength: 0
 		}
 	},
 	props: {
@@ -51,15 +52,27 @@ export default {
 			]
 		},
 		cmpText () {
-			return this.text
+			return this.text.slice(0, this.typedLength)
 		}
 	},
 	mounted () {
 		if (this.logoOnly) {
 			this.runLogoAnimation()
+		} else {
+			setTimeout(this.nextLetter, this.getNextLetterTimeout())
 		}
 	},
 	methods: {
+		getNextLetterTimeout () {
+			return Math.random() * 100 + 50
+		},
+		nextLetter () {
+			this.typedLength++
+
+			if (this.typedLength < this.text.length) {
+				setTimeout(this.nextLetter, this.getNextLetterTimeout())
+			}
+		},
 		runLogoAnimation () {
 			// horizontal bar
 			const horizontal = this.$el.querySelector('svg .horizontal')
@@ -148,7 +161,7 @@ export default {
 
         .cursor {
             position: absolute;
-            top: 12px;
+            bottom: -24px;
         }
     }
 }
